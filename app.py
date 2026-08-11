@@ -42,3 +42,5 @@ if st.button("Predict"):
     if p == 0:
         st.success("You are not Diabetic")
         st.balloons()
+
+st.write("MADE BY RATI RANJAN MOHAPATRA")
