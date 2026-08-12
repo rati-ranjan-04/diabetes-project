@@ -7,3 +7,4 @@ imbalanced-learn
 joblib
 scipy
 streamlit
+dotenv
