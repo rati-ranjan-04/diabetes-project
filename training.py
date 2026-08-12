@@ -2,6 +2,7 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
+import streamlit as st
 
 from sklearn.model_selection import train_test_split, GridSearchCV
 from sklearn.preprocessing import StandardScaler
@@ -18,7 +19,7 @@ from sklearn.metrics import (
     roc_auc_score
 )
 
-df = pd.read_csv("diabetes.csv")
+df = pd.read_csv("DATA_SET")
 print(df.head(5))
 print("Dataset Shape: ", df.shape)
 
@@ -92,5 +93,5 @@ plt.ylabel("Actual Label")
 plt.title("Confusion Matrix (Test Data)")
 plt.show()
 
-dump(grid_search, "model_dir/diabetes_model.joblib")
-print("Model saved successfully to model_dir/diabetes_model.joblib")
+dump(grid_search, "MODEL_PATH")
+print("Model saved successfully to " + st.secrets["MODEL_PATH"])
