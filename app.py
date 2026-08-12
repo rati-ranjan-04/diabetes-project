@@ -27,7 +27,7 @@ new_data = pd.DataFrame({
     "Age": [age]
 })
 
-model = joblib.load("model_dir/diabetes_model.joblib") 
+model = joblib.load(st.secrets["MODEL_PATH"])
 
 if st.button("Predict"):
     p = model.predict(new_data)
