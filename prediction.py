@@ -1,7 +1,10 @@
 from joblib import load
 import pandas as pd
 
-loaded_pipeline = load("E:/diabetes_project/model_dir/diabetes_model.joblib")
+from config import get_config
+
+model_path = get_config("MODEL_PATH", "model_dir/diabetes_model.joblib")
+loaded_pipeline = load(model_path)
 
 xyz_dict = pd.DataFrame({
     "Pregnancies": [3],

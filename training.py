@@ -2,10 +2,6 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
-import streamlit as st
-from dotenv import load_dotenv
-import os
-
 
 from sklearn.model_selection import train_test_split, GridSearchCV
 from sklearn.preprocessing import StandardScaler
@@ -22,7 +18,13 @@ from sklearn.metrics import (
     roc_auc_score
 )
 
-df = pd.read_csv("DATA_SET")
+from config import get_config
+
+# --- Config: read from .env (local) or st.secrets (Streamlit Cloud) --------
+DATA_SET_PATH = get_config("DATA_SET", "data/diabetes.csv")
+MODEL_PATH = get_config("MODEL_PATH", "model_dir/diabetes_model.joblib")
+
+df = pd.read_csv(DATA_SET_PATH)
 print(df.head(5))
 print("Dataset Shape: ", df.shape)
 
@@ -39,6 +41,7 @@ X_train, X_test, y_train, y_test = train_test_split(
     random_state=42
 )
 
+
 def print_metrics(title, y_true, y_pred):
     acc = accuracy_score(y_true, y_pred)
     prec = precision_score(y_true, y_pred, zero_division=0)
@@ -51,6 +54,7 @@ def print_metrics(title, y_true, y_pred):
     print(f"  Recall: {rec:.2%}")
     print(f"  F1-score: {f1:.2%}")
     print()
+
 
 pipeline = Pipeline([
     ('scaler', StandardScaler()),
@@ -94,9 +98,11 @@ sns.heatmap(cm, annot=True, cmap="Blues",
 plt.xlabel("Predicted Label")
 plt.ylabel("Actual Label")
 plt.title("Confusion Matrix (Test Data)")
+plt.savefig("reports/confusion_matrix.png", dpi=150)
 plt.show()
 
-X = os.getenv("MODEL_PATH", "model_dir/diabetes_model.joblib", "DATA_SET" , "data/diabetes.csv")
-
-dump(grid_search, "MODEL_PATH")
-print("Model saved successfully to " + st.secrets["MODEL_PATH"])
+# --- Save model to the path read from config, not a literal string --------
+import os
+os.makedirs(os.path.dirname(MODEL_PATH), exist_ok=True)
+dump(grid_search, MODEL_PATH)
+print("Model saved successfully to " + MODEL_PATH)
