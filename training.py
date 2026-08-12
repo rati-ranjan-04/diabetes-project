@@ -96,5 +96,7 @@ plt.ylabel("Actual Label")
 plt.title("Confusion Matrix (Test Data)")
 plt.show()
 
+X = os.getenv("MODEL_PATH", "model_dir/diabetes_model.joblib", "DATA_SET" , "data/diabetes.csv")
+
 dump(grid_search, "MODEL_PATH")
 print("Model saved successfully to " + st.secrets["MODEL_PATH"])
